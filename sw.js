@@ -1,9 +1,17 @@
-/* Cache lại trang + font + nhạc để lần sau mở không cần mạng. */
-const CACHE = 'sorry-v1';
+/* Cache lại trang + font + nhạc để lần sau mở không cần mạng.
+
+   Trang HTML thì ưu tiên mạng trước (có bản mới là thấy ngay), hỏng mạng
+   mới lấy bản đã lưu. Font/nhạc/ảnh thì lấy bản đã lưu trước cho nhanh.
+   Đổi số ở CACHE mỗi lần deploy để dọn sạch bản cũ. */
+const CACHE = 'sorry-v3';
 const SHELL = ['./', './index.html', './cuon.html'];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE)
+      .then((c) => Promise.allSettled(SHELL.map((u) => c.add(new Request(u, { cache: 'reload' })))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', (e) => {
@@ -19,12 +27,33 @@ self.addEventListener('fetch', (e) => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
+  const sameOrigin = url.origin === location.origin;
   const cacheable =
-    url.origin === location.origin ||
+    sameOrigin ||
     /(^|\.)(fonts\.googleapis\.com|fonts\.gstatic\.com|cdn\.tailwindcss\.com)$/.test(url.hostname);
 
   if (!cacheable) return;
 
+  const isPage = req.mode === 'navigate' ||
+                 (sameOrigin && /\.html?$/.test(url.pathname));
+
+  /* Trang: mạng trước — khỏi bị kẹt ở bản cũ sau khi deploy lại */
+  if (isPage) {
+    e.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
+          }
+          return res;
+        })
+        .catch(() => caches.match(req).then((hit) => hit || caches.match('./index.html')))
+    );
+    return;
+  }
+
+  /* Còn lại: bản đã lưu trước cho nhanh */
   e.respondWith(
     caches.match(req).then((hit) => {
       if (hit) return hit;
