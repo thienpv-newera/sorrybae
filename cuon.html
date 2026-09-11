@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B0F14">
+<title>Con Ngủ Rồi Anh Mới Chơi</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;1,300&display=swap&subset=vietnamese,latin" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:   '#0B0F14',
+          ink2:  '#141A22',
+          cream: '#F1EDE6',
+          lamp:  '#E8B77A'
+        },
+        fontFamily: {
+          display: ['"Playfair Display"', 'Georgia', 'serif'],
+          sans:    ['"Be Vietnam Pro"', 'system-ui', '-apple-system', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  /* Nền tối trơn, vẽ ngay từ đầu để không bị chớp trắng khi Tailwind chưa tải xong */
+  html, body { background: #0B0F14; color: #F1EDE6; margin: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif; overflow-x: hidden; }
+
+  #intro {
+    position: fixed; inset: 0; z-index: 50;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: #07090C;
+    transition: opacity 800ms ease;
+  }
+
+  /* Khổ thơ / các khối hiện dần khi cuộn tới */
+  .reveal      { opacity: .3; transform: translateY(16px);
+                 transition: opacity 800ms cubic-bezier(.22,.61,.36,1),
+                             transform 800ms cubic-bezier(.22,.61,.36,1); }
+  .reveal.on   { opacity: 1; transform: none; }
+  .reveal-out  { opacity: 0; }          /* khối bắt đầu từ mờ hẳn, không phải 30% */
+
+  /* Mỗi khổ chiếm gần trọn màn hình: phải cuộn mới qua khổ kế */
+  .stanza { min-height: 84vh; min-height: 84svh; }
+
+  /* Cỡ chữ co theo bề ngang máy để không dòng nào bị gãy làm hai */
+  .lyric { font-size: clamp(15px, calc(5.1vw - 2px), 20px); line-height: 2.05; }
+
+  /* Thanh tiến trình */
+  #track { touch-action: none; }
+  #knob  { transition: transform 150ms ease; }
+  #track:active #knob, #hit:active #knob { transform: scale(1.6); }
+
+  .num { font-variant-numeric: tabular-nums; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { transition-duration: 1ms; transform: none; }
+  }
+</style>
+</head>
+
+<body class="bg-ink text-cream antialiased">
+
+<!-- ══════════ 1. MÀN MỞ ══════════ -->
+<div id="intro">
+  <p class="px-8 text-center text-[13px] font-light tracking-[0.22em] text-cream/40">Gửi bà xã của anh.</p>
+
+  <button id="openBtn" type="button"
+    class="mt-12 h-28 w-28 rounded-full border border-lamp/40 text-[15px] font-light tracking-wide text-lamp/90
+           transition-all duration-500 hover:border-lamp/70 hover:text-lamp active:scale-95">
+    Mở nghe
+  </button>
+</div>
+
+
+<!-- ══════════ 2. HERO ══════════ -->
+<header id="hero" class="flex min-h-[100svh] flex-col items-center justify-center px-7 text-center">
+  <h1 class="font-display text-[40px] font-medium leading-[1.2] tracking-[-0.01em] [text-wrap:balance] sm:text-[52px]">
+    Con Ngủ Rồi<br>Anh Mới Chơi
+  </h1>
+  <p class="mt-7 max-w-[19rem] text-[14px] font-light leading-relaxed text-cream/45">
+    Anh viết cho em. Nghe hết giùm anh nha.
+  </p>
+
+  <div class="mt-16 h-10 w-px bg-cream/15" aria-hidden="true"></div>
+</header>
+
+
+<!-- ══════════ 4. LỜI BÀI HÁT ══════════ -->
+<main>
+
+  <section aria-label="Lời bài hát" class="mx-auto max-w-[34rem] px-5">
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light">
+        Mười một giờ, đèn phòng con vừa tắt<br>
+        Tiếng em ru còn vướng ở sau lưng<br>
+        Anh ngồi đây, màn hình chưa chịu tối<br>
+        Tai đeo rồi, nên đâu nghe em kêu
+      </p>
+    </div>
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light">
+        Anh từng nói con ngủ rồi anh chơi<br>
+        Con ngủ lâu rồi, anh chưa đứng lên<br>
+        Em thay tã, pha sữa, rồi dỗ con<br>
+        Một mình em, ngay phía sau lưng anh
+      </p>
+    </div>
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light italic text-cream/85">
+        Em không cãi, em chỉ quay đi<br>
+        Cái im đó nghe to hơn tiếng la
+      </p>
+    </div>
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light text-lamp/95">
+        Xin lỗi em, lần này anh sai thật<br>
+        Không phải một đêm, là nhiều đêm rồi<br>
+        Anh hứa nhanh quá nên anh quên nhanh<br>
+        Còn em thì nhớ hết, từng lần một<br>
+        Cho anh xin lại chỗ ngồi của anh<br>
+        Bên em, bên con, không phải bàn kia
+      </p>
+    </div>
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light">
+        Sáng nay con đòi “ba ơi bế con”<br>
+        Anh còn ngái ngủ, em bế con đi<br>
+        Em không nói gì, còn pha cà phê<br>
+        Anh cầm ly lên mà tay anh run
+      </p>
+    </div>
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light italic text-cream/85">
+        Cái máy kia đâu có lỗi gì<br>
+        Lỗi là anh chọn sai chỗ ngồi<br>
+        Anh không dám xin em bỏ qua liền<br>
+        Chỉ xin em cho anh làm lại, từ đêm nay
+      </p>
+    </div>
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light text-lamp/95">
+        Xin lỗi em, lần này anh sai thật<br>
+        Không phải một đêm, là nhiều đêm rồi<br>
+        Từ đêm nay anh rút dây, anh tắt đèn<br>
+        Anh ru con, để em ngủ một giấc dài<br>
+        Cho anh xin lại chỗ ngồi của anh<br>
+        Bên em — chỗ lâu rồi anh bỏ trống
+      </p>
+    </div>
+
+    <div class="stanza reveal flex flex-col items-center justify-center text-center">
+      <p class="lyric font-light">
+        Con ngủ rồi... anh không chơi nữa<br>
+        Anh ngồi đây, nhìn em ngủ ngon
+      </p>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════ 5. ANH BIẾT ANH SAI Ở ĐÂU ══════════ -->
+  <section class="mx-auto mt-24 max-w-[32rem] px-7 sm:mt-36">
+    <h2 class="reveal reveal-out font-display text-[15px] font-normal uppercase tracking-[0.2em] text-lamp/60">
+      Anh biết anh sai ở đâu
+    </h2>
+
+    <div class="mt-10 space-y-8">
+      <p class="reveal reveal-out text-[17px] font-light leading-relaxed" style="transition-delay:80ms">
+        Anh hứa con ngủ rồi anh mới chơi. Anh không giữ lời.
+      </p>
+      <p class="reveal reveal-out text-[17px] font-light leading-relaxed" style="transition-delay:260ms">
+        Em thức với con, còn anh thì đeo tai nghe.
+      </p>
+      <p class="reveal reveal-out text-[17px] font-light leading-relaxed" style="transition-delay:440ms">
+        Em không la anh câu nào. Cái đó mới làm anh sợ.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ══════════ 6. ANH HỨA VỚI EM ══════════ -->
+  <section class="mx-auto mt-28 max-w-[32rem] px-7 sm:mt-40">
+    <h2 class="reveal reveal-out font-display text-[15px] font-normal uppercase tracking-[0.2em] text-lamp/60">
+      Anh hứa với em
+    </h2>
+
+    <ol class="mt-10 space-y-8">
+      <li class="reveal reveal-out flex gap-4" style="transition-delay:80ms">
+        <span class="num mt-[3px] shrink-0 font-display text-[15px] text-lamp/70">1.</span>
+        <span class="text-[17px] font-light leading-relaxed">9 giờ tối là anh tắt máy. Không bàn cãi.</span>
+      </li>
+      <li class="reveal reveal-out flex gap-4" style="transition-delay:260ms">
+        <span class="num mt-[3px] shrink-0 font-display text-[15px] text-lamp/70">2.</span>
+        <span class="text-[17px] font-light leading-relaxed">Tối nào cũng anh ru con ngủ.</span>
+      </li>
+      <li class="reveal reveal-out flex gap-4" style="transition-delay:440ms">
+        <span class="num mt-[3px] shrink-0 font-display text-[15px] text-lamp/70">3.</span>
+        <span class="text-[17px] font-light leading-relaxed">Cuối tuần một buổi chỉ có em — không điện thoại, không game.</span>
+      </li>
+    </ol>
+
+    <p class="reveal reveal-out mt-12 text-[13px] font-light italic text-cream/40" style="transition-delay:600ms">
+      Em nhắc anh nếu anh quên.
+    </p>
+  </section>
+
+</main>
+
+
+<!-- ══════════ 7. ẢNH ══════════ -->
+<section class="mt-28 overflow-hidden px-7 sm:mt-40" aria-label="Ảnh">
+  <div class="mx-auto max-w-[26rem] space-y-8">
+
+    <figure class="reveal reveal-out -rotate-[1.4deg] pr-6">
+      <div class="overflow-hidden rounded-[18px] bg-ink2">
+        <img src="images/1.jpg" alt="" loading="lazy" class="block aspect-[4/5] w-full object-cover"
+             onerror="this.style.display='none'">
+      </div>
+    </figure>
+
+    <figure class="reveal reveal-out rotate-[1.8deg] pl-10" style="transition-delay:120ms">
+      <div class="overflow-hidden rounded-[18px] bg-ink2">
+        <img src="images/2.jpg" alt="" loading="lazy" class="block aspect-square w-full object-cover"
+             onerror="this.style.display='none'">
+      </div>
+    </figure>
+
+    <figure class="reveal reveal-out -rotate-[0.8deg] pr-12" style="transition-delay:240ms">
+      <div class="overflow-hidden rounded-[18px] bg-ink2">
+        <img src="images/3.jpg" alt="" loading="lazy" class="block aspect-[5/4] w-full object-cover"
+             onerror="this.style.display='none'">
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ══════════ 8. KẾT ══════════ -->
+<footer class="mt-32 px-7 text-center sm:mt-44">
+  <p class="reveal reveal-out font-display text-[30px] leading-snug">Anh thương em.</p>
+  <p class="reveal reveal-out mt-8 text-[11px] font-light tracking-[0.14em] text-cream/25" style="transition-delay:300ms">
+    — Anh · 11.09.2026
+  </p>
+</footer>
+
+<div class="h-[55svh]" aria-hidden="true"></div>
+<div id="spacer" class="h-[104px]" aria-hidden="true"></div>
+
+
+<!-- ══════════ 3. PLAYER (dính đáy) ══════════ -->
+<div id="player"
+     class="pointer-events-none fixed inset-x-0 bottom-0 z-40 translate-y-full border-t border-white/[.06]
+            bg-ink2/75 opacity-0 backdrop-blur-xl transition-all duration-700"
+     style="padding-bottom: env(safe-area-inset-bottom, 0px)">
+
+  <div class="mx-auto flex max-w-[34rem] items-center gap-4 px-5 pb-3 pt-3">
+
+    <button id="playBtn" type="button" aria-label="Phát nhạc"
+      class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-lamp/35
+             text-lamp transition-colors duration-300 hover:border-lamp/70 active:scale-95">
+      <svg id="iPlay" viewBox="0 0 24 24" class="ml-[2px] h-[18px] w-[18px]" fill="currentColor" aria-hidden="true">
+        <path d="M8 5.5v13l11-6.5z"/>
+      </svg>
+      <svg id="iPause" viewBox="0 0 24 24" class="hidden h-[18px] w-[18px]" fill="currentColor" aria-hidden="true">
+        <path d="M8 5h3v14H8zM13 5h3v14h-3z"/>
+      </svg>
+    </button>
+
+    <div class="min-w-0 flex-1">
+      <div id="hit" class="-my-2 cursor-pointer py-2">
+        <div id="track" class="relative h-[3px] w-full rounded-full bg-cream/15"
+             role="slider" tabindex="0" aria-label="Tiến trình bài hát"
+             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="fill" class="absolute inset-y-0 left-0 rounded-full bg-lamp" style="width:0%"></div>
+          <div id="knob" class="absolute top-1/2 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-lamp"
+               style="left:0%"></div>
+        </div>
+      </div>
+
+      <div class="num mt-[7px] flex items-center justify-between text-[10.5px] font-light tracking-wide text-cream/35">
+        <span id="tCur">0:00</span>
+        <span id="tLeft" class="text-cream/25"></span>
+        <span id="tDur">--:--</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<audio id="audio" src="audio/bai-hat.mp3" preload="metadata" playsinline></audio>
+
+
+<script>
+(function () {
+  'use strict';
+
+  var intro   = document.getElementById('intro');
+  var openBtn = document.getElementById('openBtn');
+  var player  = document.getElementById('player');
+  var audio   = document.getElementById('audio');
+  var playBtn = document.getElementById('playBtn');
+  var iPlay   = document.getElementById('iPlay');
+  var iPause  = document.getElementById('iPause');
+  var hit     = document.getElementById('hit');
+  var track   = document.getElementById('track');
+  var fill    = document.getElementById('fill');
+  var knob    = document.getElementById('knob');
+  var tCur    = document.getElementById('tCur');
+  var tDur    = document.getElementById('tDur');
+  var tLeft   = document.getElementById('tLeft');
+
+  /* ---------- khoá cuộn khi còn màn mở (chỉ khi JS chạy được) ---------- */
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+
+  /* ---------- hiện dần khi cuộn tới ---------- */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) e.target.classList.add('on');
+      else if (e.target.classList.contains('stanza')) e.target.classList.remove('on');
+    });
+  }, { threshold: 0.25, rootMargin: '-6% 0px -12% 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+  /* ---------- player ---------- */
+  function fmt(s) {
+    if (!isFinite(s) || s < 0) s = 0;
+    s = Math.floor(s);
+    var m = Math.floor(s / 60);
+    var r = s % 60;
+    return m + ':' + (r < 10 ? '0' : '') + r;
+  }
+
+  var dragging = false, dragPos = 0;
+
+  function paint() {
+    var d = audio.duration;
+    var has = isFinite(d) && d > 0;
+    var c = dragging && has ? dragPos * d : audio.currentTime;
+    var p = has ? Math.min(1, Math.max(0, c / d)) : 0;
+
+    fill.style.width = (p * 100) + '%';
+    knob.style.left  = (p * 100) + '%';
+    track.setAttribute('aria-valuenow', Math.round(p * 100));
+
+    tCur.textContent  = fmt(c);
+    tDur.textContent  = has ? fmt(d) : '--:--';
+    tLeft.textContent = has ? 'còn ' + fmt(d - c) : '';
+  }
+
+  audio.addEventListener('loadedmetadata', paint);
+  audio.addEventListener('timeupdate', function () { if (!dragging) paint(); });
+  audio.addEventListener('play',  function () { iPlay.classList.add('hidden');    iPause.classList.remove('hidden'); playBtn.setAttribute('aria-label', 'Tạm dừng'); });
+  audio.addEventListener('pause', function () { iPause.classList.add('hidden');   iPlay.classList.remove('hidden');  playBtn.setAttribute('aria-label', 'Phát nhạc'); });
+  audio.addEventListener('ended', function () { audio.currentTime = 0; paint(); });
+  audio.addEventListener('waiting', function () { tLeft.textContent = 'đang tải nhạc…'; });
+  audio.addEventListener('playing', paint);
+  audio.addEventListener('error', function () {
+    tLeft.textContent = 'chưa có file nhạc';
+    playBtn.disabled = true;
+    playBtn.classList.add('opacity-30');
+  });
+
+  playBtn.addEventListener('click', function () {
+    if (audio.paused) { var p = audio.play(); if (p && p.catch) p.catch(function () {}); }
+    else audio.pause();
+  });
+
+  function posFrom(e) {
+    var r = track.getBoundingClientRect();
+    if (!r.width) return 0;
+    return Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+  }
+
+  hit.addEventListener('pointerdown', function (e) {
+    if (!isFinite(audio.duration) || audio.duration <= 0) return;
+    dragging = true; dragPos = posFrom(e);
+    hit.setPointerCapture(e.pointerId);
+    paint(); e.preventDefault();
+  });
+  hit.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    dragPos = posFrom(e); paint();
+  });
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    if (isFinite(audio.duration) && audio.duration > 0) audio.currentTime = dragPos * audio.duration;
+    paint();
+  }
+  hit.addEventListener('pointerup', endDrag);
+  hit.addEventListener('pointercancel', endDrag);
+
+  track.addEventListener('keydown', function (e) {
+    if (!isFinite(audio.duration) || audio.duration <= 0) return;
+    if (e.key === 'ArrowRight') { audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); e.preventDefault(); }
+    if (e.key === 'ArrowLeft')  { audio.currentTime = Math.max(0, audio.currentTime - 5);              e.preventDefault(); }
+  });
+
+  /* ---------- mở màn ---------- */
+  var opened = false;
+  function open() {
+    if (opened) return;
+    opened = true;
+
+    /* Gọi play() NGAY trong cử chỉ chạm — iOS Safari chỉ cho phép như vậy */
+    var pr = audio.play();
+    if (pr && pr.catch) pr.catch(function () {});
+
+    intro.style.opacity = '0';
+    intro.style.pointerEvents = 'none';
+
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    window.scrollTo(0, 0);
+
+    player.classList.remove('translate-y-full', 'opacity-0', 'pointer-events-none');
+    paint();
+
+    setTimeout(function () { if (intro.parentNode) intro.parentNode.removeChild(intro); }, 900);
+  }
+  openBtn.addEventListener('click', open);
+
+  /* ---------- chạy offline sau lần đầu ---------- */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
