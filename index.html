@@ -673,6 +673,11 @@ $('#pCopy').addEventListener('click', function(){
 
 load();
 buildRows();
+
+/* Cache lại trang + nhạc để lần sau mở gần như không cần mạng */
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}
 })();
 </script>
 

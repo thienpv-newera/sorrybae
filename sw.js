@@ -3,8 +3,8 @@
    Trang HTML thì ưu tiên mạng trước (có bản mới là thấy ngay), hỏng mạng
    mới lấy bản đã lưu. Font/nhạc/ảnh thì lấy bản đã lưu trước cho nhanh.
    Đổi số ở CACHE mỗi lần deploy để dọn sạch bản cũ. */
-const CACHE = 'sorry-v3';
-const SHELL = ['./', './index.html', './cuon.html'];
+const CACHE = 'sorry-v4';
+const SHELL = ['./', './index.html'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
