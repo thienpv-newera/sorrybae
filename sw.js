@@ -1,6 +1,6 @@
 /* Cache lại trang + font + nhạc để lần sau mở không cần mạng. */
 const CACHE = 'sorry-v1';
-const SHELL = ['./', './index.html'];
+const SHELL = ['./', './index.html', './cuon.html'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
